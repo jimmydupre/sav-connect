@@ -35,6 +35,8 @@ import ActionForm from 'src/components/ActionForm';
 import EditArticleForm from 'src/components/EditArticleForm';
 import EditTagForm from 'src/components/EditTagForm';
 import EditActionForm from 'src/components/EditActionForm';
+import Location from 'src/components/Location';
+import AddLocation from 'src/components/AddLocation';
 
 
 // / == Import CSS file
@@ -550,6 +552,32 @@ class App extends Component {
           </>
         );
       }} />
+
+      {/* ROUTES LOCATION */}
+      <Route exact path="/location" render={(props) => {
+        return (
+          <>
+            <SearchBar type="general" />
+            <ClassicMenu />
+            <div className="content">
+            <Location />
+            </div>
+          </>
+        );
+      }} />
+
+      <Route exact path="/location/add" render={(props) => {
+              return (
+                <>
+                  <SearchBar type="general" />
+                  <ClassicMenu />
+                  <div className="content">
+                  <AddLocation />
+                  </div>
+                </>
+              );
+            }} />
+
 
       <Route>
         <SearchBar type="general" />
