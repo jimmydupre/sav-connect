@@ -30,7 +30,7 @@ const TagForm = () => {
     dataform.append('title', data.title);
     dataform.append('color', color);
 
-    axios.post('http://localhost:3000/api/tag/add', dataform, {
+    axios.post(`${sessionStorage.url}}/api/tag/add`, dataform, {
       headers: {
         Authorization: sessionStorage.token,
         post: {

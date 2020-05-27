@@ -1,9 +1,6 @@
 // == Import npm
-import React, {useState, useEffect, Component} from 'react';
-import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router';
-import { useParams } from 'react-router-dom';
+import React, { Component } from 'react';
+
 import axios from 'axios';
 import Datetime from 'react-datetime';
 import { Modal } from 'react-bootstrap';
@@ -80,7 +77,7 @@ class DevisForm extends Component {
   constructor(props) {
     super(props);
   
-    const url = `http://localhost:3000/api/sav/stepfive/${props.order_number}`;
+    const url = `${sessionStorage.url}/api/sav/stepfive/${props.order_number}`;
       axios.get(
         url, {
           withCredentials: true,
@@ -162,7 +159,7 @@ class DevisForm extends Component {
           console.log(Array.from(dataform));
           
           //Get data from the Api with an axios request
-          axios.patch(`http://localhost:3000/api/sav/stepfive/${this.state.order_number}`, dataform,{
+          axios.patch(`${sessionStorage.url}/api/sav/stepfive/${this.state.order_number}`, dataform,{
             headers: {
               Authorization: sessionStorage.token,
               post: {
@@ -196,7 +193,7 @@ class DevisForm extends Component {
   handleChangeProducts = (event) => {
     const values = event.target.value;
     
-    axios.get(`http://localhost:3000/api/search/product/?q=${values}`, {
+    axios.get(`${sessionStorage.url}/api/search/product/?q=${values}`, {
       withCredentials: true,
       headers: {
         Authorization: sessionStorage.token,
@@ -229,7 +226,7 @@ class DevisForm extends Component {
     const idProduct = this.state.product;
     const idSav = this.state.devis.id;
 
-    axios.get(`http://localhost:3000/api/product/${idSav}/article/${idProduct}`, {
+    axios.get(`${sessionStorage.url}/api/product/${idSav}/article/${idProduct}`, {
       withCredentials: true,
       headers: {
         Authorization: sessionStorage.token,
@@ -294,7 +291,7 @@ class DevisForm extends Component {
       const state = this.state;
       const id = state.devis.products[index].idrel;
 
-      axios.get(`http://localhost:3000/api/product/sav/delete/${id}`, {
+      axios.get(`${sessionStorage.url}/api/product/sav/delete/${id}`, {
       withCredentials: true,
       headers: {
         Authorization: sessionStorage.token,
@@ -447,40 +444,4 @@ class DevisForm extends Component {
 }
  
 export default DevisForm;
-
-
-//   const { register, handleSubmit } = useForm();
-
-//   //On submit, the form will be sent to the API and it's data will be save in the API.
-//   const onSubmit = data => {
-//     console.log(data);
-//     const dataform = new FormData();
-//     dataform.append('devis_is_accepted', data.devis_is_accepted);
-//     dataform.append('date_devis', data.date_devis);
-//     dataform.append('amount_devis', data.amount_devis);
-//     dataform.append('amount_diag', data.amount_diag);
-//     dataform.append('recall_devis', data.recall_devis);
-//     dataform.append('order_number_id', devis.id);
-
-    
-//     //Get data from the Api with an axios request
-//     axios.patch(`http://localhost:3000/api/sav/stepfive/${order_number}`, dataform,{
-//       headers: {
-//         Authorization: sessionStorage.token,
-//         post: {
-//           'Content-Type': 'multipart/form-data'
-//         }
-//       }
-//     })
-//   .then ((response) => {
-//     if(response.data){
-//       alert.success('Validé avec succès')
-//     }else{
-//       alert.error('Une erreur s\'est produite.');
-//     }
-//   })
-//   .catch ((error) => {console.trace(error); })
-
-//   };
-
 

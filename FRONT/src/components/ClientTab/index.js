@@ -23,7 +23,7 @@ const ClientTab = () => {
     //Use state for the loading
    const [ loading, setLoading ] = useState(false);
 
-    const url = `http://localhost:3000/api/sav/stepone/${order_number}`;
+    const url = `${sessionStorage.url}/api/sav/stepone/${order_number}`;
       const clientData = () => {
         axios.get(
           url, {

@@ -30,7 +30,7 @@ const OptionsForm = () => {
   const [ tagsOn, setTagsOn] = useState([]);
 
 
-  const url = `http://localhost:3000/api/sav/stepone/${order_number}`;
+  const url = `${sessionStorage.url}/api/sav/stepone/${order_number}`;
       const clientData = () => {
         axios.get(
           url, {
@@ -40,7 +40,7 @@ const OptionsForm = () => {
             },        
           })
           .then((res) => {
-            const urlTagsOn = `http://localhost:3000/api/tag/sav/${res.data[0].id}`;
+            const urlTagsOn = `${sessionStorage.url}/api/tag/sav/${res.data[0].id}`;
 
                 axios.get(
                   urlTagsOn, {
@@ -62,7 +62,7 @@ const OptionsForm = () => {
     useEffect(clientData, [])
 
     //Get all tags
-    const urlTags = `http://localhost:3000/api/tag`;
+    const urlTags = `${sessionStorage.url}/api/tag`;
     const tagsData = () => {
     axios.get(
               urlTags, {
@@ -122,7 +122,7 @@ const OptionsForm = () => {
     const activeTag = (e, idSav) => {
       const id = e.target.getAttribute('id');
       if(e.target.classList.contains('act')){
-        const urlAddTag = `http://localhost:3000/api/tag/remove/${id}/sav/${clientOne.id}`;
+        const urlAddTag = `${sessionStorage.url}/api/tag/remove/${id}/sav/${clientOne.id}`;
         axios.get(
           urlAddTag, {
             withCredentials: true,
@@ -142,7 +142,7 @@ const OptionsForm = () => {
           })
       }else{
         
-      const urlAddTag = `http://localhost:3000/api/tag/${id}/sav/${clientOne.id}`;
+      const urlAddTag = `${sessionStorage.url}/api/tag/${id}/sav/${clientOne.id}`;
       axios.get(
         urlAddTag, {
           withCredentials: true,
@@ -174,7 +174,7 @@ const OptionsForm = () => {
      * ACTIONS 
      */
 
-    const urlActions = `http://localhost:3000/api/action`;
+    const urlActions = `${sessionStorage.url}/api/action`;
     const actionsData = () => {
     axios.get(
               urlActions, {
@@ -205,7 +205,7 @@ const OptionsForm = () => {
 
     const addAction = (data) => {
       const idAction = data.action;
-      const urlAddAction = `http://localhost:3000/api/action/${idAction}/sav/${clientOne.id}`;
+      const urlAddAction = `${sessionStorage.url}/api/action/${idAction}/sav/${clientOne.id}`;
       axios.get(
         urlAddAction, {
           withCredentials: true,
@@ -230,7 +230,7 @@ const OptionsForm = () => {
      */
     const archiveSav = () => {
       if(window.confirm('Voulez-vous archiver cette fiche ?')){
-        const urlArchive = `http://localhost:3000/api/sav/archive/${clientOne.id}`;
+        const urlArchive = `${sessionStorage.url}/api/sav/archive/${clientOne.id}`;
         axios.get(
           urlArchive, {
             withCredentials: true,

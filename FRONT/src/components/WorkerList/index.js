@@ -13,7 +13,7 @@ const WorkerList = () => {
     const [archive, setArchive] = useState();
   
   const [userList, setUserList] = useState([]);
-  const userUrl = 'http://localhost:3000/api/user';
+  const userUrl = `${sessionStorage.url}/api/user`;
 
   const userData = () => {
     axios.get(userUrl, {
@@ -63,7 +63,7 @@ const WorkerList = () => {
     // We give it an id
     const id = element.getAttribute('id');
     // Road to archive the card
-    const archiveUrl = `http://localhost:3000/api/user/archive/${id}`;
+    const archiveUrl = `${sessionStorage.url}/api/user/archive/${id}`;
     axios.get(
       archiveUrl, {
         withCredentials: true,

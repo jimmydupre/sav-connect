@@ -30,7 +30,7 @@ const MainDashboard = () => {
 
   let { page } = useParams();
 
-  const url = `http://localhost:3000/api/sav/page/${page}/nb/20`;
+  const url = `${sessionStorage.url}/api/sav/page/${page}/nb/20`;
 
   page = parseInt(page, 10);
 
@@ -66,7 +66,7 @@ const MainDashboard = () => {
     // We give it an id
     const id = element.getAttribute('id');
     // Road to archive the card
-    const archiveUrl = `http://localhost:3000/api/sav/archive/${id}`;
+    const archiveUrl = `${sessionStorage.url}/api/sav/archive/${id}`;
     
     axios.get(
       archiveUrl, {
@@ -100,7 +100,7 @@ const MainDashboard = () => {
   const addMoreSavData = () => {
     const page = isPage += 1;
     const nbElement = 8;
-    const url = `http://localhost:3000/api/sav/page/${page}/nb/${nbElement}`;
+    const url = `${sessionStorage.url}/api/sav/page/${page}/nb/${nbElement}`;
     setIsPage(page);
 
     axios.get(

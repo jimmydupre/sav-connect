@@ -23,7 +23,7 @@ const ClientList = () => {
 
   let { page, id } = useParams();
 
-  const url = `http://localhost:3000/api/client/page/${page}/nb/20`;
+  const url = `${sessionStorage.url}/api/client/page/${page}/nb/20`;
 
   page = parseInt(page, 10)
  
@@ -55,7 +55,7 @@ const ClientList = () => {
   const addMoreSavData = () => {
     const page = isPage += 1;
     const nbElement = 8;
-    const url = `http://localhost:3000/api/client/page/${page}/nb/${nbElement}`;
+    const url = `${sessionStorage.url}/api/client/page/${page}/nb/${nbElement}`;
     setIsPage(page);
 
     axios.get(

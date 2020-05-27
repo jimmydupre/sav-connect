@@ -7,7 +7,7 @@ import axios from 'axios'
 //This component is a list of all the actions created by the admin 
 const ActionList= () => {
    const [actionList, setActionList] = useState([]);
-   const actionUrl = 'http://localhost:3000/api/action';
+   const actionUrl = `${sessionStorage.url}/api/action`;
 
    const actionsData = () => {
      axios.get(actionUrl, {

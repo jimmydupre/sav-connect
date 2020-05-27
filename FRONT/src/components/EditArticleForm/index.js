@@ -28,7 +28,7 @@ const EditArticleForm = (props) => {
     const [ product, setProduct ] = useState([]);
     
     if(id){
-        const url = `http://localhost:3000/api/product/${id}`;
+        const url = `${sessionStorage.url}/api/product/${id}`;
         const productData = () => {
           axios.get(
             url, {
@@ -61,7 +61,7 @@ const EditArticleForm = (props) => {
   
     console.log(Array.from(dataform));
     //Get data from the Api with an axios request
-    axios.patch(`http://localhost:3000/api/product/edit/${id}`, dataform,{
+    axios.patch(`${sessionStorage.url}/api/product/edit/${id}`, dataform,{
         headers: {
           Authorization: sessionStorage.token,
           post: {

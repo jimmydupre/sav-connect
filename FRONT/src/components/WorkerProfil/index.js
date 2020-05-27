@@ -12,7 +12,7 @@ const WorkerProfil = () => {
 
   // If add an id show the worker profile with his activity
   if (id) {
-    const workerUrl = `http://localhost:3000/api/user/${id}`;
+    const workerUrl = `${sessionStorage.url}/api/user/${id}`;
       const workerData = () => {
         axios.get(workerUrl, {
           withCredentials: true,

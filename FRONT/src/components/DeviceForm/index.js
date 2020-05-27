@@ -81,7 +81,7 @@ class DeviceForm extends Component {
 
     console.log(Array.from(dataform));
   //   //Get data from the Api with an axios request
-    axios.patch(`http://localhost:3000/api/sav/steptwo/${this.state.order_number}`, dataform,{
+    axios.patch(`${sessionStorage.url}/api/sav/steptwo/${this.state.order_number}`, dataform,{
       headers: {
         Authorization: sessionStorage.token,
         post: {

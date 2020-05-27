@@ -14,7 +14,7 @@ const Client = () => {
 
   if(id){
 
-    const url = `http://localhost:3000/api/client/${id}`;
+    const url = `${sessionStorage.url}/api/client/${id}`;
       const clientData = () => {
         axios.get(
           url, {

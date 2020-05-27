@@ -1,17 +1,11 @@
 // == Import npm
 import React, {useState, Component} from 'react';
-import { useForm, ErrorMessage } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch} from 'react-redux';
-import { useHistory } from 'react-router';
-import { useAlert } from 'react-alert';
 
 //Semantic-ui import
 import { Header, Form, TextArea, Button } from 'semantic-ui-react';
 
-//Import store actions
-import { seeNewCardForm } from 'src/store/actions';
 
 
 class ClientsForm extends Component {
@@ -53,7 +47,7 @@ class ClientsForm extends Component {
     
     console.log(Array.from(dataform));
     //Get data from the Api with an axios request
-    axios.post('http://localhost:3000/api/sav/stepone', dataform,{
+    axios.post(`${sessionStorage.url}/api/sav/stepone`, dataform,{
       headers: {
         Authorization: sessionStorage.token,
         post: {
@@ -96,7 +90,7 @@ class ClientsForm extends Component {
     if(values.lenght < 3){
       return;
     }
-    axios.get(`http://localhost:3000/api/search/user/?q=${values}`, {
+    axios.get(`${sessionStorage.url}/api/search/user/?q=${values}`, {
       withCredentials: true,
       headers: {
         Authorization: sessionStorage.token,

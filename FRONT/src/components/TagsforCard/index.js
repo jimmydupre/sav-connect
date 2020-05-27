@@ -5,7 +5,7 @@ import axios from 'axios';
 const TagsforCard = () => {
 const [ configTags, setConfigTags ] = useState([]);
    const getBreaks = async () => {
-    let tagsData = await axios.get('http://localhost:3000/api/tag', {
+    let tagsData = await axios.get(`${sessionStorage.url}/api/tag`, {
         withCredentials: true,
             headers: {
             Authorization: sessionStorage.token

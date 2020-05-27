@@ -19,12 +19,6 @@ import { seeClients,
          log_out
        } from 'src/store/actions';
 
-//Import modals
-// import TagModal from 'src/components/TagModal';
-// import TagListModal from 'src/components/TagListModal';
-// import ActionModal from 'src/components/ActionModal';
-// import ActionListModal from 'src/components/ActionListModal';
-
 
 // == Composant
 const BurgerButton = () => {

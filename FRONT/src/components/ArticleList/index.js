@@ -31,7 +31,7 @@ const ArticleList = () => {
 
   let { page } = useParams();
 
-  const url = `http://localhost:3000/api/product/page/${page}/nb/20`;
+  const url = `${sessionStorage.url}/api/product/page/${page}/nb/20`;
   page = parseInt(page, 10);
   const productsData = () => {
     axios.get(
@@ -59,7 +59,7 @@ const ArticleList = () => {
     // We give it an id
     const id = element.getAttribute('id');
     // Road to archive the card
-    const archiveUrl = `http://localhost:3000/api/product/archive/${id}`;
+    const archiveUrl = `${sessionStorage.url}/api/product/archive/${id}`;
 
     axios.get(
       archiveUrl, {
@@ -88,7 +88,7 @@ const ArticleList = () => {
   const addMoreSavData = () => {
     const page = isPage += 1;
     const nbElement = 8;
-    const url = `http://localhost:3000/api/product/page/${page}/nb/${nbElement}`;
+    const url = `${sessionStorage.url}/api/product/page/${page}/nb/${nbElement}`;
     setIsPage(page);
 
     axios.get(

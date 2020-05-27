@@ -41,7 +41,7 @@ const CardForm = () => {
     console.log(Array.from(dataform));
 
     //Get data from the Api with an axios request
-    axios.post('http://localhost:3000/api/sav/add', dataform,{
+    axios.post(`${sessionStorage.url}/api/sav/add`, dataform,{
       headers: {
         Authorization: sessionStorage.token,
         post: {

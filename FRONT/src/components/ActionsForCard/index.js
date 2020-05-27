@@ -4,7 +4,7 @@ import axios from 'axios';
 const ActionsForCard = () => {
 const [ configActions, setConfigActions ] = useState([]);
    const getActions = async () => {
-    let actionsData = await axios.get('http://localhost:3000/api/action', {
+    let actionsData = await axios.get(`${sessionStorage.url}/api/action`, {
         withCredentials: true,
             headers: {
             Authorization: sessionStorage.token

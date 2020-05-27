@@ -38,7 +38,7 @@ const NewFormTab = () => {
         order_number = order_number.order_number
     }
     const [ clientOne, setClient] = useState([]);
-    const url = `http://localhost:3000/api/sav/stepone/${order_number}`;
+    const url = `${sessionStorage.url}/api/sav/stepone/${order_number}`;
       const clientData = () => {
         axios.get(
           url, {
@@ -61,7 +61,7 @@ const NewFormTab = () => {
      */
     const archiveSav = () => {
         if(window.confirm('Voulez-vous archiver cette fiche ?')){
-          const urlArchive = `http://localhost:3000/api/sav/archive/${clientOne.id}`;
+          const urlArchive = `${sessionStorage.url}/api/sav/archive/${clientOne.id}`;
           axios.get(
             urlArchive, {
               withCredentials: true,

@@ -29,7 +29,7 @@ const EditWorkerForm = (props) => {
    const [ workerOne, setworker ] = useState([]);
 
    if(id){
-    const url = `http://localhost:3000/api/worker/${id}`;
+    const url = `${sessionStorage.url}/api/worker/${id}`;
       const workerData = () => {
         axios.get(
           url, {
@@ -65,7 +65,7 @@ const EditWorkerForm = (props) => {
     console.log(Array.from(dataform));
 
     //Get data from the Api with an axios request
-    axios.post(`http://localhost:3000/api/worker/edit/${id}`, dataform,{
+    axios.post(`${sessionStorage.url}/api/worker/edit/${id}`, dataform,{
         headers: {
           Authorization: sessionStorage.token,
           post: {

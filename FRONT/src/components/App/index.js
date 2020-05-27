@@ -65,6 +65,9 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+
+    sessionStorage.setItem('url', "http://ec2-54-90-30-146.compute-1.amazonaws.com:3000");
+
   }
 
   render () {

@@ -29,7 +29,7 @@ const ClientForm = (props) => {
   const [ clientOne, setClient] = useState([]);
 
   if(id){
-    const url = `http://localhost:3000/api/client/${id}`;
+    const url = `${sessionStorage.url}/api/client/${id}`;
       const clientData = () => {
         axios.get(
           url, {
@@ -66,7 +66,7 @@ const ClientForm = (props) => {
     console.log(Array.from(dataform));
 
     //Get data from the Api with an axios request
-    axios.patch(`http://localhost:3000/api/client/edit/${id}`, dataform,{
+    axios.patch(`${sessionStorage.url}/api/client/edit/${id}`, dataform,{
       headers: {
         Authorization: sessionStorage.token,
         post: {

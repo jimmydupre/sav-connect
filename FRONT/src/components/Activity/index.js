@@ -53,13 +53,13 @@ class Activity extends Component {
   loadData = () => {
     const state = this.state;
     if(this.state.type === 'sav'){
-      state.url = `http://localhost:3000/api/activity/sav/${this.state.id}`
+      state.url = `${sessionStorage.url}/api/activity/sav/${this.state.id}`
     }else if (this.state.type === 'general'){
-      state.url = `http://localhost:3000/api/activity/${this.state.nbResult}`;
+      state.url = `${sessionStorage.url}/api/activity/${this.state.nbResult}`;
     } else if (this.state.type === 'user'){
-      state.url = `http://localhost:3000/api/activity/user/${this.state.id}`;
+      state.url = `${sessionStorage.url}/api/activity/user/${this.state.id}`;
     } else {
-      state.url = `http://localhost:3000/api/activity/${this.state.nbResult}`;
+      state.url = `${sessionStorage.url}/api/activity/${this.state.nbResult}`;
     }
     this.setState(state)
 

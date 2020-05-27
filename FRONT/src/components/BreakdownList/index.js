@@ -17,7 +17,7 @@ const BreakdownList = () => {
   
   //Get Data from breakdowns saved on database  by axios request and useState
   const [ breakList, setBreakList ] = useState([]);
-  const url = 'http://localhost:3000/api/config-panne';
+  const url = `${sessionStorage.url}/api/config-panne`;
 
   const breakData = () => {
       axios.get(url, {
@@ -41,7 +41,7 @@ const BreakdownList = () => {
     // We give it an id
     const id = element.getAttribute('id');
     // Road to archive the config breakdown
-    const archiveUrl = `http://localhost:3000/api/config-panne/archive/${id}`;
+    const archiveUrl = `${sessionStorage.url}/api/config-panne/archive/${id}`;
     axios.get (
       archiveUrl, {
         withCredentials: true,

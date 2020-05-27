@@ -31,7 +31,7 @@ const ActionForm = () => {
     
     console.log(Array.from(dataform));
 
-    axios.post('http://localhost:3000/api/action/add', dataform,{
+    axios.post(`${sessionStorage.url}/api/action/add`, dataform,{
       headers: {
         Authorization: sessionStorage.token,
         post: {

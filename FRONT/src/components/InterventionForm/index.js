@@ -23,7 +23,7 @@ class InterventionForm extends Component {
   constructor(props) {
     super(props)
 
-    const url = `http://localhost:3000/api/sav/stepthree/${props.order_number}`;
+    const url = `${sessionStorage.url}/api/sav/stepthree/${props.order_number}`;
             axios.get(
               url, {
                 withCredentials: true,
@@ -64,7 +64,7 @@ class InterventionForm extends Component {
     console.log(Array.from(dataform));
 
     //Get data from the Api with an axios request
-    axios.patch(`http://localhost:3000/api/sav/stepthree/${this.state.intervention.order_number}`, dataform,{
+    axios.patch(`${sessionStorage.url}/api/sav/stepthree/${this.state.intervention.order_number}`, dataform,{
       headers: {
         Authorization: sessionStorage.token,
         post: {

@@ -7,7 +7,6 @@ import axios from 'axios';
 import PrintComponents from 'react-print-components';
 import * as ReactBootStrap from 'react-bootstrap';
 
-// import ClientsForCard from 'src/components/ClientsForCard';
 
 // This components show the Card Page
 const Card = () => {
@@ -24,7 +23,7 @@ const Card = () => {
 
   // If there is card id, get card data:
 
-  const url = `http://localhost:3000/api/sav/${order_number}`;
+  const url = `${sessionStorage.url}/api/sav/${order_number}`;
 
   console.log(order_number)
       const savData = () => {
@@ -53,7 +52,7 @@ const Card = () => {
       // We give it an id
       const id = element.getAttribute('id');
       // Road to archive the card
-      const archiveUrl = `http://localhost:3000/api/sav/archive/${id}`;
+      const archiveUrl = `${sessionStorage.url}/api/sav/archive/${id}`;
 
       axios.get (
         archiveUrl, {
@@ -94,7 +93,7 @@ const Card = () => {
     const date_enter = new Date(cardOne.date_enter);
     const interval_repair = new Date(cardOne.interval_repair);
     const date_devis = new Date(cardOne.date_devis);
-    const urlQrcode = `http://localhost:8080/card/${cardOne.order_number}`;
+    const urlQrcode = `${sessionStorage.url}/card/${cardOne.order_number}`;
     return (
       <div className="main">
         <Segment>

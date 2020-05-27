@@ -71,7 +71,7 @@ class ProfilePage extends Component {
 
     console.log(Array.from(dataform));
 
-    axios.patch('http://localhost:3000/api/user/profil', dataform,{
+    axios.patch(`${sessionStorage.url}/api/user/profil`, dataform,{
           headers: {
             Authorization: sessionStorage.token,
             post: {
