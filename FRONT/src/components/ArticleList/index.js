@@ -110,6 +110,18 @@ const ArticleList = () => {
       })
   };
 
+  if(!articleList){
+    return (
+      <div className="main">
+        <Header 
+            as='h2'>
+            Liste des Articles <Link to="/articleform"><i className="plus icon"></i></Link>
+          </Header>
+          <p>Pas d'articles</p>
+    </div>
+    );
+  }
+
   return (
     <div className="main">
         <Header 

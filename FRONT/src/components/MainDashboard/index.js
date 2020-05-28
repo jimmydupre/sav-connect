@@ -115,12 +115,27 @@ const MainDashboard = () => {
         if (res.data.savs.length < nbElement) {
           setHasMore(false);
         }
+        
         setSavList(savList.concat(res.data.savs));
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+
+  if(!savList){
+    return (
+      <div className="main">
+      <Header
+        as="h2"
+      >
+        Liste des réparations <Link to="/formtab"><i className="plus icon" /></Link>
+      </Header>
+      <p>Pas de fiche SAV</p>
+    </div>
+    );
+  }
 
   return (
 

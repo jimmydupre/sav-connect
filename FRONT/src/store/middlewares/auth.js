@@ -11,7 +11,7 @@ export default (store) => (next) => (action) => {
                 break;
             }
             axios
-            .post('http://localhost:3000/api/login', {
+            .post(`${sessionStorage.url}/api/login`, {
                 mail: store.getState().mail,
                 password: store.getState().password,
             },{
@@ -46,7 +46,7 @@ export default (store) => (next) => (action) => {
         case LOG_OUT: {
             if(sessionStorage.token){
                 axios
-              .get('http://localhost:3000/api/logout', {
+              .get(`${sessionStorage.url}/api/logout`, {
                 withCredentials: true,
                 headers:{
                     Authorization: sessionStorage.token

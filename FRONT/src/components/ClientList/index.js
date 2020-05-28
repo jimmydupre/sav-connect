@@ -80,6 +80,18 @@ const ClientList = () => {
       })
   };
 
+  if(!clientList) {
+    return (
+<div className="main">
+        <Header 
+            as='h2'>
+              Liste des clients <Link to="/formtab"><i className="plus icon"></i></Link>
+          </Header>
+          <p>Pas de clients</p>
+    </div>
+    );
+  }
+
   return (
     <div className="main">
         <Header 

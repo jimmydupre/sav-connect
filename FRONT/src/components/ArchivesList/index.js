@@ -75,6 +75,20 @@ const ArchiveList = () => {
       });
   };
 
+  if(!savList){
+    return (
+      <div className="main">
+      <Header as="h2">
+        Liste des archives
+        <Link to="/formtab">
+          <i className="plus icon" />
+        </Link>
+      </Header>
+      <p>Pas de fiches archivés.</p>
+    </div>
+    );
+  }
+
   return (
     <div className="main">
       <Header as="h2">

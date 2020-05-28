@@ -36,7 +36,7 @@ const Login = () => {
 
     <div className="loginMain">
       <div className="loginSpace">
-        <img src={`${sesionStorage.url}/app/logo.png`} alt={"logo"} className="profil-logo"/>
+        <img src={`${sessionStorage.url}/app/logo.png`} alt={"logo"} className="profil-logo"/>
           <Header 
             as='h2'
             className="profil-header"

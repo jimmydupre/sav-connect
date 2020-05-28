@@ -13,15 +13,13 @@ const WorkerList = () => {
     const [archive, setArchive] = useState();
   
   const [userList, setUserList] = useState([]);
-  const userUrl = `${sessionStorage.url}/api/user`;
 
   const userData = () => {
-    axios.get(userUrl, {
-      withCredentials: true,
+    axios.get(`${sessionStorage.url}/api/user`,{
       headers: {
         Authorization: sessionStorage.token
-      },
-    })
+      }
+      })
     .then((response) => {
       setUserList(response.data);
       setLoading(true);
@@ -84,6 +82,21 @@ const WorkerList = () => {
 
     }   
   };
+
+  console.log(userList);
+
+  if(!userList){
+    return (
+      <div className="main">
+      <div className="worker-list">
+        <Header as='h2'>
+            Liste des employés <Link to="/newclient"><i className="plus icon" /></Link>
+          </Header>
+          <p>Pas d'employés</p>
+    </div>
+    </div>
+    );
+  }
 
   return (
     <div className="main">
