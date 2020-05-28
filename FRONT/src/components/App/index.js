@@ -66,8 +66,8 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    sessionStorage.setItem('url', 'http://ec2-54-90-30-146.compute-1.amazonaws.com:3000');
-    console.log('URI : ', process.env.URI);
+    // sessionStorage.setItem('url', 'http://ec2-54-90-30-146.compute-1.amazonaws.com:3000');
+    sessionStorage.setItem('url', 'http://localhost:3000');
 
   }
 

@@ -299,8 +299,11 @@ module.exports = orderRepairController = {
             customer_id == 'undefined' ? customer_id=null : '';
             customer_id == 'Choisissez un client' ? customer_id=null : '';
             // J'ai pas de client doncc je créer le client pour la fiche
-            if(!customer_id){
-                if(firstname && lastname) {
+            if(customer_id == 'null' || !customer_id){
+                if(lastname) {
+                    if(!firstname){
+                        firstname = ' '; //TODO: FAIRE UNE MIGRATION POUR CORIGER CA
+                    }
                     const customer = new Customer({
                         firstname,
                         lastname,
@@ -331,6 +334,7 @@ module.exports = orderRepairController = {
                         return res.status(403).send({"error": "Une erreur s'est produite lors de la sauvegarde du client."});
                     }else{
                         customer_id = result.id;
+                        console.log(customer_id);
                     }
                }
             }

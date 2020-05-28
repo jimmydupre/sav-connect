@@ -38,6 +38,9 @@ const EditArticleForm = (props) => {
               },        
             })
             .then((res) => {
+              const value = res.data.price;
+              const priceTTC = tva(value);
+              setTtc(priceTTC);
               setProduct(res.data)
             })
             .catch((err) => {
@@ -47,6 +50,15 @@ const EditArticleForm = (props) => {
         
         useEffect(productData, [])
   }
+
+
+  const [ttc, setTtc ] = useState();
+
+  const onChangeTTC = (event) => {
+    const value = event.target.value;
+    const priceTTC = tva(value);
+    setTtc(priceTTC);
+  } 
 
  const { register, handleSubmit } = useForm();
  const onSubmit = data => {
@@ -83,6 +95,22 @@ const EditArticleForm = (props) => {
     .catch ((error) => {console.trace(error); })
     };
 
+    const tva = (price) => {
+      let tarifHT = parseFloat(price);
+  
+      let tarifTTC
+      let montantTVA;
+  
+      const TVA = 20;
+  
+      montantTVA = tarifHT * TVA / 100;
+      tarifTTC = tarifHT + montantTVA;
+      const result = tarifTTC.toFixed(2);
+      return result;
+    }
+
+
+
     return (
       <div className="main">
         <Header as='h2'>
@@ -109,11 +137,13 @@ const EditArticleForm = (props) => {
                ref={register}/>
             </Form.Field>
             <Form.Field>
-              <label>Prix</label>
+              <label>Prix HT</label>
               <input 
                name="price" 
                defaultValue={product.price || ''}
-               ref={register} />
+               ref={register}
+               onChange={onChangeTTC} />
+               <p>Tarif TTC : {ttc}</p>
             </Form.Field>
             <Form.Field>
               <label>unité</label>
