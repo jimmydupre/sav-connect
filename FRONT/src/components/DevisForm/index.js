@@ -28,7 +28,7 @@ class DevisForm extends Component {
       recall_devis: null,
       products: []
     },
-    isAccepted : [
+    isAccepted : [ //TODO: METTRE EN PLACE LA GESTION DES DEVIS EN BDD
       {
         name: 'Devis accepté'
       },
@@ -39,7 +39,7 @@ class DevisForm extends Component {
         name: 'Devis en attente de réponse'
       }
     ],
-    diags : [
+    diags : [ //TODO : METTRE EN PLACE LES DIAGS EN BDD
       {
         value : '15',
         text : '15€ / Petit appareil',
@@ -88,14 +88,19 @@ class DevisForm extends Component {
         .then((res) => {
           console.log(res.data[0]);
           this.state.devis = res.data[0];
+          this.setTVAState();
         })
         .catch((err) => {
           console.log(err)
         });
     
-        
-
-  }  
+  } 
+  
+  setTVAState = () => {
+    const state = this.state;
+    state.devis.amount_devis = this.tva(state.devis.amount_devis);
+    this.setState(state);
+  }
 
   showDiags = () => {
     return this.state.diags.map((diag, index) => {
@@ -138,10 +143,7 @@ class DevisForm extends Component {
   }
 
   handleChangeDate = moment =>  {
-    const date = new Date(moment);
-    console.log('DATE : ', date)
     const dateMoment = moment;
-    console.log('MOMENT : ', dateMoment.tz("Europe/Paris").format());
     const state = this.state;
     state.devis.date_devis = dateMoment.format();
     this.setState(state);
@@ -259,13 +261,14 @@ class DevisForm extends Component {
   showProductsInList = () => {
     const products = this.state.devis.products;
     return products.map((product, key) => {
+      const total = parseFloat(this.tva(product.price) * product.qty);
       return(
         <tr key={key}>
           <td>{product.ref}</td>
           <td>{product.name}</td>
-          <td>{product.price}</td>
+          <td>{this.tva(product.price)}</td>
           <td><span  onClick={e => { this.removeQtyOnProduct(e, key) }}> - </span> {product.qty} <span onClick={e => { this.addQtyOnProduct(e, key) }}> + </span> <span className="delete-product"  onClick={e => { this.deleteProduct(e, key) }}> X </span></td>
-          <td>{product.price * product.qty}</td>
+          <td>{total}</td>
         </tr>
         );
     })
@@ -319,12 +322,28 @@ class DevisForm extends Component {
     const state = this.state;
     let amount = 0;
     state.devis.products.map(product => {
-      console.log(product);
       amount += product.price * product.qty;
     });
-    state.devis.amount_devis = amount;
+    state.devis.amount_devis = this.tva(amount);
     this.setState(state);
   } 
+
+  tva = (price) => {
+    if(price){
+      let tarifHT = parseFloat(price);
+  
+      let tarifTTC
+      let montantTVA;
+  
+      const TVA = 20;
+  
+      montantTVA = tarifHT * TVA / 100;
+      tarifTTC = tarifHT + montantTVA;
+      const result = tarifTTC.toFixed(2);
+      return result;
+    }
+    return;
+  }
 
   render() {
     
