@@ -54,9 +54,12 @@ module.exports = customerController = {
      */
     add: async (req, res) => {
         try {
-            const {firstname, lastname, mail, phone, phone_two, customer_detail } = req.body;
+            let {firstname, lastname, mail, phone, phone_two, customer_detail } = req.body;
             // Check exist firstname and lastname
-            if(firstname && lastname) {
+            if(lastname) {
+                if(!firstname) {
+                    firstname = ' ';
+                }
                 const customer = new Customer({
                     firstname,
                     lastname,
