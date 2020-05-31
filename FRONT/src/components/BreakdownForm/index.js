@@ -35,7 +35,7 @@ const BreakdownForm = () => {
 
         console.log(Array.from(dataform));
         //Get data from Api wwith axios request
-        axios.post('http://localhost:3000/api/config-panne/add', dataform, {
+        axios.post(`${sessionStorage.url}/api/config-panne/add`, dataform, {
             headers: {
                 Authorization: sessionStorage.token,
                 post: {

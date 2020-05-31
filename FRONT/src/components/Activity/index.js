@@ -53,13 +53,13 @@ class Activity extends Component {
   loadData = () => {
     const state = this.state;
     if(this.state.type === 'sav'){
-      state.url = `http://localhost:3000/api/activity/sav/${this.state.id}`
+      state.url = `${sessionStorage.url}/api/activity/sav/${this.state.id}`
     }else if (this.state.type === 'general'){
-      state.url = `http://localhost:3000/api/activity/${this.state.nbResult}`;
+      state.url = `${sessionStorage.url}/api/activity/${this.state.nbResult}`;
     } else if (this.state.type === 'user'){
-      state.url = `http://localhost:3000/api/activity/user/${this.state.id}`;
+      state.url = `${sessionStorage.url}/api/activity/user/${this.state.id}`;
     } else {
-      state.url = `http://localhost:3000/api/activity/${this.state.nbResult}`;
+      state.url = `${sessionStorage.url}/api/activity/${this.state.nbResult}`;
     }
     this.setState(state)
 
@@ -81,47 +81,49 @@ class Activity extends Component {
 
   activitiesList = () => {
     const activities = this.state.activities;
-    return activities.map((activity, i) => {
-      const date = new Date(activity.created_at);
-      console.log(activity);
-      if (activity.type === 'tag') {
-        const color = React.createElement('span', {
-          style: 
-          {
-            color: activity.color,
-            fontWeight: 'bold'
-          }
-        }, activity.name);
-        
-        return (
-          <div className="activity-content" key={i}>
+    // console.log(activities.length);
+    if(activities[0]){
+      return activities.map((activity, i) => {
+        const date = new Date(activity.created_at);
+        if (activity.type === 'tag') {
+          const color = React.createElement('span', {
+            style: 
+            {
+              color: activity.color,
+              fontWeight: 'bold'
+            }
+          }, activity.name);
+          
+          return (
+            <div className="activity-content" key={i}>
+                <Link className="activity-header" to={`/card/${activity.order_number}`}>
+                  <span><i className="large tag middle aligned icon"></i></span>{activity.lastname} a ajouté le tag {color}
+                </Link>
+                <div className="activity-description">
+                <Link  to={`/card/${activity.order_number}`}>
+                  {activity.order_number}
+                </Link> 
+                <span className="activity-span">{date.toLocaleDateString('fr-FR')}</span>
+                </div>
+            </div>
+          );
+        } else {
+          return (
+            <div className="activity-content" key={i}>
               <Link className="activity-header" to={`/card/${activity.order_number}`}>
-                <span><i className="large tag middle aligned icon"></i></span>{activity.lastname} a ajouté le tag {color}
+              <span><i className="large tasks middle aligned icon"></i></span> {activity.lastname} {activity.name}
               </Link>
               <div className="activity-description">
-              <Link  to={`/card/${activity.order_number}`}>
-                {activity.order_number}
-              </Link> 
-              <span className="activity-span">{date.toLocaleDateString('fr-FR')}</span>
+                <Link  to={`/card/${activity.order_number}`}>
+                  {activity.order_number}
+                </Link> 
+                <span className="activity-span">{date.toLocaleDateString('fr-FR')}</span>
               </div>
-          </div>
-        );
-      } else {
-        return (
-          <div className="activity-content" key={i}>
-            <Link className="activity-header" to={`/card/${activity.order_number}`}>
-             <span><i className="large tasks middle aligned icon"></i></span> {activity.lastname} {activity.name}
-            </Link>
-            <div className="activity-description">
-              <Link  to={`/card/${activity.order_number}`}>
-                {activity.order_number}
-              </Link> 
-               <span className="activity-span">{date.toLocaleDateString('fr-FR')}</span>
             </div>
-          </div>
-        );
-      }
-  });
+          );
+        }
+    });
+  }
 }
 
   render() {

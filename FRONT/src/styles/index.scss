@@ -506,6 +506,14 @@ a:hover {
   display: none;
 }
 
+.Toastify__toast-container--top-right {
+  top: 5em !important;
+}
+
+
+
+// MEDIA DESKTOP
+
 @media screen and (min-width : 768px) {
 
   .content {
@@ -821,5 +829,7 @@ a:hover {
   .loginMain .loginSpace .ui.form .field.field input{
     width: 400px;
   }
+
+
 
 }

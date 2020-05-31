@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import { Form } from 'semantic-ui-react';
 import axios from 'axios';
 
-import logo from 'src/assets/img/SAVconnect_logo_white.png';
 
 // Import store actions
 import { enterMainPage } from 'src/store/actions';
@@ -26,13 +25,13 @@ const SearchBar = (props) => {
 
   let SEARCH_URL;
   if (props.type === 'general') {
-    SEARCH_URL = 'http://localhost:3000/api/search?q=';
+    SEARCH_URL = `${sessionStorage.url}/api/search?q=`;
   }
   else if (props.type === 'user') {
-    SEARCH_URL = 'http://localhost:3000/api/search/user/?q=';
+    SEARCH_URL = `${sessionStorage.url}/api/search/user/?q=`;
   }
   else {
-    SEARCH_URL = 'http://localhost:3000/api/search?q=';
+    SEARCH_URL = `${sessionStorage.url}/api/search?q=`;
   }
 
   const searchData = (data) => {
@@ -128,7 +127,7 @@ const SearchBar = (props) => {
     <div className="header-area">
       <img
         className="header-area-image"
-        src={logo}
+        src={`${sessionStorage.url}/app/logo.png`}
         alt="logo"
         onClick={(evt) => {
           dispatch(enterMainPage(history));

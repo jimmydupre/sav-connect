@@ -13,15 +13,13 @@ const WorkerList = () => {
     const [archive, setArchive] = useState();
   
   const [userList, setUserList] = useState([]);
-  const userUrl = 'http://localhost:3000/api/user';
 
   const userData = () => {
-    axios.get(userUrl, {
-      withCredentials: true,
+    axios.get(`${sessionStorage.url}/api/user`,{
       headers: {
         Authorization: sessionStorage.token
-      },
-    })
+      }
+      })
     .then((response) => {
       setUserList(response.data);
       setLoading(true);
@@ -63,7 +61,7 @@ const WorkerList = () => {
     // We give it an id
     const id = element.getAttribute('id');
     // Road to archive the card
-    const archiveUrl = `http://localhost:3000/api/user/archive/${id}`;
+    const archiveUrl = `${sessionStorage.url}/api/user/archive/${id}`;
     axios.get(
       archiveUrl, {
         withCredentials: true,
@@ -84,6 +82,21 @@ const WorkerList = () => {
 
     }   
   };
+
+  console.log(userList);
+
+  if(!userList){
+    return (
+      <div className="main">
+      <div className="worker-list">
+        <Header as='h2'>
+            Liste des employés <Link to="/newclient"><i className="plus icon" /></Link>
+          </Header>
+          <p>Pas d'employés</p>
+    </div>
+    </div>
+    );
+  }
 
   return (
     <div className="main">

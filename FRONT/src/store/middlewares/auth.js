@@ -11,17 +11,19 @@ export default (store) => (next) => (action) => {
                 break;
             }
             axios
-            .post('http://localhost:3000/api/login', {
+            .post(`${sessionStorage.url}/api/login`, {
                 mail: store.getState().mail,
                 password: store.getState().password,
-            }, console.log(store.getState()),{
+            },{
                 withCredentials: true,
             })
             .then((response) => {
+              if(response.data.error){
+                sessionStorage.setItem('errorLogin', response.data.error);
+              }
               if(response.data.token){
                 // on enregistre le token en session 'token'
                 sessionStorage.setItem('token', 'Bearer'+ ' ' + response.data.token);
-                console.log(response.data)
                 sessionStorage.setItem('isAdmin', response.data.isAdmin);
                 // si ya un token on passe en session isConencted à true
                 if (response.data.token !== '') {
@@ -30,8 +32,6 @@ export default (store) => (next) => (action) => {
                 else {
                   sessionStorage.setItem('isConnected', false);
                 } 
-                console.log(sessionStorage.isConnected);
-                console.log("isAdmin", sessionStorage.isAdmin);
                 store.dispatch(enterMainPage(action.history));
                 }
                 else{
@@ -46,7 +46,7 @@ export default (store) => (next) => (action) => {
         case LOG_OUT: {
             if(sessionStorage.token){
                 axios
-              .get('http://localhost:3000/api/logout', {
+              .get(`${sessionStorage.url}/api/logout`, {
                 withCredentials: true,
                 headers:{
                     Authorization: sessionStorage.token

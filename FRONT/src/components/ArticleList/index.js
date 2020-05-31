@@ -31,7 +31,7 @@ const ArticleList = () => {
 
   let { page } = useParams();
 
-  const url = `http://localhost:3000/api/product/page/${page}/nb/20`;
+  const url = `${sessionStorage.url}/api/product/page/${page}/nb/20`;
   page = parseInt(page, 10);
   const productsData = () => {
     axios.get(
@@ -45,6 +45,8 @@ const ArticleList = () => {
         setArticleList(res.data.products);
         setNbPage(res.data.nbPages);
         setLoading(true);
+        setIsPage(page);
+        setHasMore(true);
       })
       .catch((err) => {
         console.log(err)
@@ -59,7 +61,7 @@ const ArticleList = () => {
     // We give it an id
     const id = element.getAttribute('id');
     // Road to archive the card
-    const archiveUrl = `http://localhost:3000/api/product/archive/${id}`;
+    const archiveUrl = `${sessionStorage.url}/api/product/archive/${id}`;
 
     axios.get(
       archiveUrl, {
@@ -86,9 +88,11 @@ const ArticleList = () => {
 
 
   const addMoreSavData = () => {
+    console.log('ok');
     const page = isPage += 1;
+
     const nbElement = 8;
-    const url = `http://localhost:3000/api/product/page/${page}/nb/${nbElement}`;
+    const url = `${sessionStorage.url}/api/product/page/${page}/nb/${nbElement}`;
     setIsPage(page);
 
     axios.get(
@@ -99,6 +103,7 @@ const ArticleList = () => {
         },        
       })
       .then((res) => {
+        console.log(res);
         if(res.data.products.length < nbElement ){
           setHasMore(false);
         }
@@ -110,6 +115,32 @@ const ArticleList = () => {
       })
   };
 
+  if(!articleList){
+    return (
+      <div className="main">
+        <Header 
+            as='h2'>
+            Liste des Articles <Link to="/articleform"><i className="plus icon"></i></Link>
+          </Header>
+          <p>Pas d'articles</p>
+    </div>
+    );
+  }
+
+  const tva = (price) => {
+    let tarifHT = parseFloat(price);
+
+    let tarifTTC
+    let montantTVA;
+
+    const TVA = 20;
+
+    montantTVA = tarifHT * TVA / 100;
+    tarifTTC = tarifHT + montantTVA;
+    const result = tarifTTC.toFixed(2);
+    return result;
+  }
+
   return (
     <div className="main">
         <Header 
@@ -120,8 +151,7 @@ const ArticleList = () => {
               <div className="table-head">
                   <div className="number">REFERENCE</div>
                   <div className="designation">Désignation</div>
-                  <div className="price">Tarif</div>
-                  <div className="mesure">Unité</div>
+                  <div className="price">Tarif TTC</div>
                   <div className="options">Options</div>
               </div>
               <InfiniteScroll
@@ -140,14 +170,14 @@ const ArticleList = () => {
                 }
                 >
                 {articleList.map((product, index) => {
+                  const price = tva(product.price);
                   return(
                     <div key={index} className='table-row'>
-                      <div className="number">{product.id}</div>
+                      <div className="number">{product.ref}</div>
                       <div className="designation">
                         {product.name}
                       </div>
-                      <div className="price"><p>{product.price}</p></div>
-                      <div className="mesure">{product.mesure}</div>
+                      <div className="price"><p>{price}</p></div>
                       <div className="options">
                         <Link to={`/editarticleform/${product.id}`}>
                           <i className="edit icon"></i>

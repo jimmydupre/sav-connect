@@ -39,7 +39,7 @@ const ClientForm = () => {
 
     console.log(Array.from(dataform));
     //Get data from the Api with an axios request
-    axios.post('http://localhost:3000/api/client/add', dataform,{
+    axios.post(`${sessionStorage.url}/api/client/add`, dataform,{
       headers: {
         Authorization: sessionStorage.token,
         post: {

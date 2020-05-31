@@ -72,7 +72,7 @@ module.exports = productController = {
                 data.products = products;
             }else{
                 const offset = (page-1) * nbElement;
-                console.log(offset);
+
                 const products = await Product.paginate(limit,offset);
                 data.products = products;
             }
@@ -199,10 +199,52 @@ module.exports = productController = {
             const result = await Product.addProductOnSav(idSav,idProduct,userId);
             if(result){
                 await Action.addActionOnSav(5, idSav, userId);
-                return res.send(true);
+                return res.send(result);
             }else{
                 return res.send({"error": "Une erreur s'est produite lors de l'ajout du produit à la fiche."});
             }
+
+        } catch (error) {
+            console.log(error);
+            return res.send(false);
+        }
+    },
+
+
+    productBySav : async (req, res) => {
+        try{
+            
+            const idSav = req.params;
+            if(!idSav) {
+                return res.send({"error": "Il vous manque un paramètre pour effectuer votre demande."});
+            }
+
+            const result = await Product.productBySav(idSav);
+            if(!result){
+                return res.send([]);
+            }else{
+                return res.send(result);
+            }
+
+        }catch(error) {
+            console.log(error);
+            return res.send(false);
+        }
+    },
+
+    deleteProductOnSav : async (req, res) => {
+        try {
+            const {id} = req.params;
+            if(!id) {
+                return res.send({'error': "Il manque un paramètre pour éxécuter votre demande."});
+            }
+
+            const result = await Product.deleteProductOnSav(id);
+            if(!result){
+                return res.send(false);
+            }
+
+            return res.send(true);
 
         } catch (error) {
             console.log(error);

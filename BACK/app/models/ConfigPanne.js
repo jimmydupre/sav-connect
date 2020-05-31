@@ -116,7 +116,7 @@ module.exports = class Action {
             const query = 'DELETE FROM "order_repair_config_panne" WHERE order_repair_id=$1 AND config_panne_id=$2 AND user_id=$3;';
             const values = [idSav, idAction, idUser];
             const result = await db.query(query, values);
-            console.log(result);
+
             if(result.rowCount == 1){
                 return true;
             }else {

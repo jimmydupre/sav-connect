@@ -98,7 +98,7 @@ module.exports = searchController = {
         search: async (req, res) => {
             try {
                 const search = req.query.q;
-                console.log(search);
+
                 const result = await OrderRepair.search(search.toLowerCase());
                 if(result){
                     return res.send(result);

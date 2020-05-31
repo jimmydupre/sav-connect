@@ -1,57 +1,70 @@
  // == Import npm
- import React, {useState, useEffect} from 'react';
- import { useForm } from 'react-hook-form';
- import { useParams } from 'react-router-dom';
- import axios from 'axios';
- import { useAlert } from 'react-alert';
- import momentTz from 'moment-timezone';
+ import React, {Component} from 'react';
 
+ import axios from 'axios';
+ import Datetime from 'react-datetime';
+
+ import './Datetime.scss';
+ import 'moment/locale/fr';
  
  //Semantic-ui import
  import { Form, Button } from 'semantic-ui-react';
 
- const InterventionForm = () => {
-  //UseAlert shows an alert window to confirm you completed the form correctly.
-  const alert = useAlert()
-
-  //React hook form props
-  const { register, handleSubmit } = useForm();
-
-  let {order_number} = useParams();
-
-  const [ interOne, setInter] = useState([]);
-
-    const url = `http://localhost:3000/api/sav/stepthree/${order_number}`;
-      const interData = () => {
-        axios.get(
-          url, {
-            withCredentials: true,
-            headers:{
-                Authorization: sessionStorage.token
-            },        
-          })
-          .then((res) => {
-            let date = momentTz.tz(res.data[0].date_intervention);
-            res.data[0].date_intervention = date.format().toString().substring(0, date.format().toString().length - 1);
-            setInter(res.data[0])
-          })
-          .catch((err) => {
-            console.log(err)
-          })
+class InterventionForm extends Component {
+  state = { 
+    intervention : {
+      id: null,
+      date_intervention: null,
+      intervention: '',
+      order_number: this.props.order_number
     }
-    useEffect(interData, [])
+  }
 
-  //On submit, the form will be sent to the API and it's data will be save in the API.
-  const onSubmit = data => {
+  constructor(props) {
+    super(props)
+
+    const url = `${sessionStorage.url}/api/sav/stepthree/${props.order_number}`;
+            axios.get(
+              url, {
+                withCredentials: true,
+                headers:{
+                    Authorization: sessionStorage.token
+                },        
+              })
+              .then((res) => {
+                this.state.intervention = res.data[0];
+              })
+              .catch((err) => {
+                console.log(err)
+              })
+
+  }
+
+  handleChange = event => {
+    const value = event.target.value;
+    const name = event.target.name;
+    const state = this.state;
+    state.intervention[name] = value;
+    this.setState(state);
+  }
+
+  handleChangeDate = moment =>  {
+    const dateMoment = moment;
+    const state = this.state;
+    state.intervention.date_intervention = dateMoment.format();
+    this.setState(state);
+  }
+
+  handleSubmit = event => {
     const dataform = new FormData();
-    dataform.append('order_number_id', interOne.id);
-    dataform.append('intervention', data.intervention);
-    dataform.append('date_intervention', data.date_intervention);
+    dataform.append('order_number_id', this.state.intervention.order_number);
+    dataform.append('intervention', this.state.intervention.intervention);
+    dataform.append('date_intervention', this.state.intervention.date_intervention);
    
     console.log(Array.from(dataform));
 
     //Get data from the Api with an axios request
-    axios.patch(`http://localhost:3000/api/sav/stepthree/${order_number}`, dataform,{
+    axios.patch(`${sessionStorage.url}/api/sav/stepthree/${this.state.intervention.order_number}`, dataform,{
       headers: {
         Authorization: sessionStorage.token,
         post: {
@@ -61,48 +74,56 @@
     })
   .then ((response) => {
     if(response.data){
-      alert.success('La fiche a bien été modifié')
+      this.props.alert.success('La fiche a bien été modifié')
     }else{
-      alert.error('Une erreur s\'est produite.')
+      this.props.alert.error('Une erreur s\'est produite.')
     }
   })
   .catch ((error) => {console.trace(error); })
+  }
 
-  };
-    return (
-        <Form
-        className="tab-form"
-        onSubmit={handleSubmit(onSubmit)}
-        >
-            <Form.Field>
-                <label>Descriptif de l'intervention</label>
-                <textarea 
-                    placeholder='Intervention' 
-                    style={{ minHeight: 100 }}
-                    name="intervention"
-                    defaultValue={interOne.intervention}
-                    ref={register}
-                />
-            </Form.Field>
-            <Form.Field>
-                <label>Date d'intervention</label>
-                <input 
-                 type="datetime-local" 
-                 placeholder="Saisissez une date" 
-                 name="date_intervention"
-                 defaultValue={interOne.date_intervention}
-                 ref={register} 
-                 />
-            </Form.Field>
-            <div className="button-form">
-                <Button 
-                 color='green'
-                 type='submit'
-                 >Valider</Button>
-                <Button type='submit'>Annuler</Button>
-            </div>
-        </Form>
-    )
- };
 
- export default InterventionForm;
+  render() { 
+    console.log(this.state);
+    const date = new Date(this.state.intervention.date_intervention);
+
+    return ( 
+      <Form
+              className="tab-form"
+              onSubmit={this.handleSubmit}
+              >
+                  <Form.Field>
+                      <label>Descriptif de l'intervention</label>
+                      <textarea 
+                          placeholder='Intervention' 
+                          style={{ minHeight: 100 }}
+                          name="intervention"
+                          defaultValue={this.state.intervention.intervention}
+                          onChange={this.handleChange}
+                      />
+                  </Form.Field>
+                  <Form.Field>
+                      <label>Date d'intervention</label>
+                        <Datetime 
+                            locale="fr"
+                            utc={true}
+                            
+                            placeholder="Saisissez une date" 
+                            name="date_intervention" 
+                            onChange={this.handleChangeDate}
+                            value={date}
+                        />
+                  </Form.Field>
+                  <div className="button-form">
+                      <Button 
+                       color='green'
+                       type='submit'
+                       >Valider</Button>
+                      <Button type='submit'>Annuler</Button>
+                  </div>
+              </Form>
+    );
+  }
+}
+ 
+export default InterventionForm;

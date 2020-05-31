@@ -21,7 +21,7 @@ const ArchiveList = () => {
   // Pagination props:
   let { page } = useParams();
 
-  const url = `http://localhost:3000/api/sav/archive/page/${page}/nb/20`;
+  const url = `${sessionStorage.url}/api/sav/archive/page/${page}/nb/20`;
 
   page = parseInt(page, 10);
 
@@ -52,7 +52,7 @@ const ArchiveList = () => {
   const addMoreSavData = () => {
     let page = isPage += 1;
     const nbElement = 8;
-    const url = `http://localhost:3000/api/sav/archive/page/${page}/nb/${nbElement}`;
+    const url = `${sessionStorage.url}/api/sav/archive/page/${page}/nb/${nbElement}`;
     setIsPage(page);
 
     axios.get(
@@ -74,6 +74,20 @@ const ArchiveList = () => {
         console.log(err);
       });
   };
+
+  if(!savList){
+    return (
+      <div className="main">
+      <Header as="h2">
+        Liste des archives
+        <Link to="/formtab">
+          <i className="plus icon" />
+        </Link>
+      </Header>
+      <p>Pas de fiches archivés.</p>
+    </div>
+    );
+  }
 
   return (
     <div className="main">

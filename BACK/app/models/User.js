@@ -100,6 +100,22 @@ module.exports = class User {
         }
     }
 
+    async editProfil() {
+        try {
+            const query = 'UPDATE "user" SET firstname=$1, lastname=$2, mail=$3, password=$4, updated_at=now() WHERE id=$5 RETURNING *;';
+            const values = [this.firstname, this.lastname, this.mail, this.password, this.id];
+            const result = await db.query(query, values);
+            if(result.rowCount == 1){
+                return result.rows[0];
+            }else {
+                return false;
+            }            
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    }
+
     static async archive(id) {
         try {
             const query = 'UPDATE "user" SET actif=0, updated_at=now() WHERE id=$1;';

@@ -72,7 +72,7 @@ module.exports = loginController = {
     },
 
     getUserSession: async (req, res) => {
-        console.log(req.session);
+
         if(req.session.token){
             // Send token
             return res.send({

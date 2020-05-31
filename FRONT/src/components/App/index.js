@@ -38,6 +38,9 @@ import EditActionForm from 'src/components/EditActionForm';
 import Location from 'src/components/Location';
 import AddLocation from 'src/components/AddLocation';
 
+import { withAlert } from 'react-alert';
+
+
 
 // / == Import CSS file
 import 'src/styles/index.scss';
@@ -45,11 +48,10 @@ import 'src/styles/index.scss';
 // == App Component
 console.log('isConnected du session: ', sessionStorage.isConnected);
 console.log('Token du session: ', sessionStorage.token);
-class App extends Component {
 
-  // state = {
-  //   type : 'general'
-  // }
+
+
+class App extends Component {
 
   // changeState = (type) => {
   //   if(type){
@@ -58,12 +60,22 @@ class App extends Component {
   //     this.setState(state);
   //   }
   // }
+  state = {
+    alert: this.props.alert
+  }
+
 
   constructor(props) {
     super(props);
+
+    sessionStorage.setItem('url', 'http://localhost:3000');
+
   }
 
   render () {
+
+    const alert = this.state.alert;
+
     return (
   <div className="app">
     <Switch>
@@ -92,14 +104,7 @@ class App extends Component {
       />
 
 {/* ======================= FICHE SAV ======================== */}
-      <Route exact path="/formtab">
-        <SearchBar type="general" />
-        <ClassicMenu />
-        <div className="content">
-          <FormTab />
-          <Activity />
-        </div>
-      </Route>
+
       <Route exact path="/newformtab/:order_number?" render={(props) => {
         return (
           <>
@@ -127,82 +132,8 @@ class App extends Component {
 
       }} />
 
-{/* ======================= CLIENT ======================== */}
-      <Route exact path="/newclient">
-        <SearchBar type="user" />
-        <ClassicMenu />
-        <div className="content">
-          <ClientForm />
-          <Activity type="general" />
-        </div>
-      </Route>
-      <Route exact path="/getnewclient/:id">
-        <SearchBar type="user" />
-        <ClassicMenu />
-        <div className="content">
-          <NewClientForm />
-          <Activity type="client" />
-        </div>
-      </Route>
-      <Route exact path="/clients/:id">
-        <SearchBar type="user" />
-        <ClassicMenu />
-        <div className="content">
-          <Client />
-          <Activity type="client" />
-        </div>
-      </Route>
-      <Route exact path="/clientlist/:page">
-        <SearchBar type="user" />
-        <ClassicMenu />
-        <div className="content">
-          <ClientList />
-          <Activity type="general" />
-        </div>
-      </Route>
-{/* ======================= WORKER ======================== */}
-      <Route exact path="/workerlist">
-        <SearchBar type="general" />
-        <ClassicMenu />
-        <div className="content">
-          <WorkerList />
-          <Activity type="general" />
-        </div>
-      </Route>
-      <Route exact path="/workerlist/:id">
-        <SearchBar type="general" />
-        <ClassicMenu />
-        <div className="content">
-          <WorkerProfil />
-          <Activity type="user" />
-        </div>
-      </Route>
-      <Route exact path="/workerform">
-        <SearchBar type="general" />
-        <ClassicMenu />
-        <div className="content">
-          <WorkerForm />
-          <Activity type="general" />
-        </div>
-      </Route>
-{/* ======================= ARCHIVE ======================== */}
-      <Route exact path="/archivelist/:page">
-        <SearchBar type="general" />
-        <ClassicMenu />
-        <div className="content">
-          <ArchiveList />
-          <Activity type="general" />
-        </div>
-      </Route>
-{/* ======================= ARTICLE ======================== */}
-      <Route exact path="/articlelist/:page">
-        <SearchBar />
-        <ClassicMenu />
-        <div className="content">
-          <ArticleList />
-          <Activity type="general" />
-        </div>
-      </Route>
+
+
       <Route exact path="/editarticleform/:id">
         <SearchBar />
         <ClassicMenu />
@@ -211,14 +142,19 @@ class App extends Component {
           <Activity type="general" />
         </div>
       </Route>
-      <Route exact path="/articleform">
-        <SearchBar />
-        <ClassicMenu />
-        <div className="content">
-          <ArticleForm />
-          <Activity type="general" />
-        </div>
-      </Route>
+
+      <Route exact path="/articleform" render={(props) => {   
+        return (
+          <>
+            <SearchBar />
+            <ClassicMenu />
+            <div className="content">
+              <ArticleForm />
+              <Activity type="general" />
+            </div>
+          </>
+        );
+      }} />
 {/* ======================= PROFIL ======================== */}
       <Route exact path="/formtab" render={(props) => {
         return (
@@ -232,32 +168,7 @@ class App extends Component {
           </>
         );
       }} />
-      <Route exact path="/newformtab/:order_number?" render={(props)=> {
-        return(
-          <>
-          <SearchBar type="general" />
-          <ClassicMenu />
-          <div className="content">
-            <NewFormTab />
-            <Activity type="sav" id={props.match.params.order_number} />
-          </div>
-          </>
-        )
-      }} />
    
-      <Route exact path="/card/:order_number" render={(props) => {
-        
-        return (
-          <>
-            <SearchBar type="general" />
-            <ClassicMenu />
-            <div className="content">
-              <Card />
-              <Activity type="sav" id={props.match.params.order_number} update={this.changeState}  />
-            </div>
-          </>
-        );
-      }}/>
 
       <Route exact path="/newclient" render={(props) => {
         return (
@@ -362,7 +273,7 @@ class App extends Component {
         );
       }} />
 
-      <Route exact path="/articlelist/:page" render={(props) => {
+      <Route exact path="/articlelist/:page"  render={(props) => {
         return (
           <>
             <SearchBar />
@@ -375,18 +286,7 @@ class App extends Component {
         );
       }} />
 
-      <Route exact path="/articleform" render={(props) => {
-        return (
-          <>
-            <SearchBar />
-            <ClassicMenu />
-            <div className="content">
-              <ArticleForm />
-              <Activity type="general" />
-            </div>
-          </>
-        );
-      }} />
+     
 
 
       <Route exact path="/profil">
@@ -405,30 +305,8 @@ class App extends Component {
         </div>
       </Route>
 
-      <Route exact path="/breaklist">
-        <SearchBar type="general" />
-        <ClassicMenu />
-        <div className="content">
-          <BreakdownList type="user" />
-        </div>
-      </Route>
-
-      <Route exact path="/getnewbreak/:id">
-        <SearchBar type="general" />
-        <ClassicMenu />
-        <div className="content">
-          <NewBreakdownForm type="user" />
-        </div>
-      </Route>
 {/* ======================= TAG ======================== */}
-      <Route exact path="/tagform/">
-        <SearchBar type="general" />
-        <ClassicMenu />
-        <div className="content">
-          <TagForm />
-          <Activity type="general" />
-        </div>
-      </Route>
+
 
       <Route exact path="/edittagform/:id">
         <SearchBar type="general" />
@@ -439,32 +317,11 @@ class App extends Component {
         </div>
       </Route>
 
-      <Route exact path="/tags">
-        <SearchBar type="general" />
-        <ClassicMenu />
-        <div className="content">
-          <TagList />
-          <Activity type="general" />
-        </div>
-      </Route>
-{/* ======================= ACTION ======================== */}
-      <Route exact path="/actionlist">
-        <SearchBar type="general" />
-        <ClassicMenu />
-        <div className="content">
-         <ActionList />
-         <Activity type="general"/>
-        </div>
-      </Route>
 
-      <Route exact path="/actionform">
-        <SearchBar type="general" />
-        <ClassicMenu />
-        <div className="content">
-         <ActionForm />
-         <Activity type="general"/>
-        </div>
-      </Route>
+{/* ======================= ACTION ======================== */}
+
+
+
 
       <Route exact path="/editactionform/:id">
         <SearchBar type="general" />

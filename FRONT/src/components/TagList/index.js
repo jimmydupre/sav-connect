@@ -30,7 +30,7 @@ const TagList = () => {
   // UseState to archive a card
   const [archive, setArchive] = useState();
   
-  const tagUrl = 'http://localhost:3000/api/tag';
+  const tagUrl = `${sessionStorage.url}/api/tag`;
 
   const tagsData = () => {
     axios.get(tagUrl, {
@@ -71,7 +71,7 @@ const TagList = () => {
     // We give it an id
     const id = element.getAttribute('id');
      // Road to archive the card
-    const archiveUrl = `http://localhost:3000/api/tag/archive/${id}`;
+    const archiveUrl = `${sessionStorage.url}/api/tag/archive/${id}`;
 
     axios.get (
       archiveUrl, {

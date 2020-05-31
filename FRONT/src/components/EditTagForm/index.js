@@ -29,7 +29,7 @@ const EditTagForm = (props) => {
   const [ tag, setTag ] = useState([]);
 
   if(id){
-    const url = `http://localhost:3000/api/tag/${id}`;
+    const url = `${sessionStorage.url}/api/tag/${id}`;
     const tagData = () => {
       axios.get(
         url, {
@@ -60,7 +60,7 @@ const EditTagForm = (props) => {
 
     console.log(Array.from(dataform));
     //Get data from the Api with an axios request
-    axios.patch(`http://localhost:3000/api/tag/edit/${id}`, dataform, {
+    axios.patch(`${sessionStorage.url}/api/tag/edit/${id}`, dataform, {
       headers: {
         Authorization: sessionStorage.token,
         post: {

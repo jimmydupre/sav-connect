@@ -10,6 +10,7 @@ const OrderRepair = require('../models/OrderRepair');
 // CUSTOMER MODEL
 const Customer = require('../models/Customer');
 const Action = require('../models/Action');
+const Product = require('../models/Product');
 
 
 module.exports = orderRepairController = {
@@ -100,7 +101,19 @@ module.exports = orderRepairController = {
             !order_number ? res.send({"error": "Il manque un paramètre pour éxécuter votre demande"}) :  '' ;
 
             const result = await OrderRepair.getStepFive(order_number);
-            !result ? res.send({"error": "Pas de résultat"}) : res.send(result);
+
+            const id = result[0].id;
+            
+            const products = await Product.productBySav(id);
+            if(products){
+                result[0].products = products;
+            }
+            console.log(result);
+            if(!result){
+                return res.send({"error": "Pas de résultat"});
+            }
+            
+            return res.send(result);
 
         } catch (error) {
             console.log(error);
@@ -114,7 +127,6 @@ module.exports = orderRepairController = {
             !order_number ? res.send({"error": "Il manque un paramètre pour éxécuter votre demande"}) :  '' ;
             let {devis_is_accepted, date_devis, amount_devis, amount_diag, recall_devis, order_number_id } = req.body;
             !devis_is_accepted ? devis_is_accepted='' : '';
-            date_devis ? date_devis += 'Z' : null;
             !date_devis ? date_devis=null : '';
             !amount_devis ? amount_devis=null : '';
             !amount_diag ? amount_diag=null : '';
@@ -132,7 +144,9 @@ module.exports = orderRepairController = {
                 order_number
             });
 
-            !result ? res.send({"error": "Une erreur s'est produite lors de la modification."}): ''; 
+            if(!result){
+                return res.send({"error": "Une erreur s'est produite lors de la modification."});
+            }
 
             let headerAuth = req.headers.authorization;
             // On récupère l'id stocké dans le code
@@ -143,7 +157,7 @@ module.exports = orderRepairController = {
 
         } catch (error) {
             console.trace(error);
-            return false;
+            return res.send(false);
         }
     },
 
@@ -285,8 +299,11 @@ module.exports = orderRepairController = {
             customer_id == 'undefined' ? customer_id=null : '';
             customer_id == 'Choisissez un client' ? customer_id=null : '';
             // J'ai pas de client doncc je créer le client pour la fiche
-            if(!customer_id){
-                if(firstname && lastname) {
+            if(customer_id == 'null' || !customer_id){
+                if(lastname) {
+                    if(!firstname){
+                        firstname = ' '; //TODO: FAIRE UNE MIGRATION POUR CORIGER CA
+                    }
                     const customer = new Customer({
                         firstname,
                         lastname,
@@ -317,6 +334,7 @@ module.exports = orderRepairController = {
                         return res.status(403).send({"error": "Une erreur s'est produite lors de la sauvegarde du client."});
                     }else{
                         customer_id = result.id;
+                        console.log(customer_id);
                     }
                }
             }
@@ -499,9 +517,9 @@ module.exports = orderRepairController = {
                 if(isOk) {
                     // Send data for the new order_repair
                     result.customer = customer;
-                    // console.log();
+
                     // const resultAction = await Action.addActionOnSav(2,result.customer.id,userId);
-                    // console.log(resultAction);
+
                     res.send(result);
                 }else{
                     res.status(403).send({"error": "Une erreur s'est produite lors de la sauvegarde du OrderRepair."});

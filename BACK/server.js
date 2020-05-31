@@ -13,6 +13,8 @@ const corsMiddleware = require('./app/middlewares/corsMiddleware');
 app.use(corsMiddleware);
 
 app.use('/static', express.static(__dirname + '/uploads'));
+app.use('/app', express.static(__dirname + '/static'));
+
 
 app.use(session({
     secret: process.env.SECRET_SESSION,

@@ -13,6 +13,7 @@
     "start_front": "cd FRONT && yarn start",
     "watching": "npm run start_back & npm run start_front",
     "dev": "npm run install && npm run watching",
+    "build" : "cd FRONT && npm run build && cd .. ",
     "start": ""
   },
   "repository": {

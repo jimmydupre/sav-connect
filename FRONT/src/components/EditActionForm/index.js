@@ -27,7 +27,7 @@ const EditActionForm = (props) => {
   const [ action, setAction ] = useState([]);
   console.log(id);
   if(id){
-    const actionUrl= `http://localhost:3000/api/action/${id}`;
+    const actionUrl= `${sessionStorage.url}/api/action/${id}`;
     const actionData = () => {
         axios.get(
           actionUrl, {
@@ -56,7 +56,7 @@ const { register, handleSubmit } = useForm();
 
     console.log(Array.from(dataform));
     //Get data from the Api with an axios request
-    axios.patch(`http://localhost:3000/api/action/edit/${id}`, dataform, {
+    axios.patch(`${sessionStorage.url}/api/action/edit/${id}`, dataform, {
       headers: {
         Authorization: sessionStorage.token,
         post: {

@@ -43,7 +43,6 @@ module.exports = actionController = {
             if(!order_number) {
                 return res.status('403').send({"error": "Il vous manque un paramètre pour effectuer votre demande."});
             }
-            console.log(order_number);
             const result = await Activity.activityForOneSav(order_number);
             if(result){
                 return res.send(result);

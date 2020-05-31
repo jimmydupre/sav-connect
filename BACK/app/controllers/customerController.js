@@ -23,7 +23,7 @@ module.exports = customerController = {
             }
         } catch (error) {
             console.log(error);
-            res.send(error);
+            return res.send(error);
         }
     },
 
@@ -54,9 +54,12 @@ module.exports = customerController = {
      */
     add: async (req, res) => {
         try {
-            const {firstname, lastname, mail, phone, phone_two, customer_detail } = req.body;
+            let {firstname, lastname, mail, phone, phone_two, customer_detail } = req.body;
             // Check exist firstname and lastname
-            if(firstname && lastname) {
+            if(lastname) {
+                if(!firstname) {
+                    firstname = ' ';
+                }
                 const customer = new Customer({
                     firstname,
                     lastname,
@@ -92,7 +95,7 @@ module.exports = customerController = {
             return res.status(403).send({"error": "Vous n'avez pas complété tous les champs."});
         } catch (error) {
             console.log(error);
-            res.status(403).send(error);
+            return res.status(403).send(error);
         }
     },
 

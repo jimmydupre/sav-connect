@@ -27,7 +27,7 @@ const NewBreakDownForm = () => {
     const [ breakOne, setBreak ] = useState([]);
 
     if(id){
-        const url = `http://localhost:3000/api/config-panne/${id}`;
+        const url = `${sessionStorage.url}/api/config-panne/${id}`;
             const breakData = () => {
                 axios.get(
                     url, {
@@ -57,7 +57,7 @@ const NewBreakDownForm = () => {
 
         console.log(Array.from(dataform));
 
-        axios.patch(`http://localhost:3000/api/config-panne/edit/${id}`, dataform, {
+        axios.patch(`${sessionStorage.url}/api/config-panne/edit/${id}`, dataform, {
             headers: {
                 Authorization: sessionStorage.token,
                 post: {

@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { Header, Button, Form } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { useDispatch} from 'react-redux';
 import { useHistory } from 'react-router';
+import { useAlert } from 'react-alert';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import axios from 'axios';
@@ -17,14 +18,15 @@ import DevisForm from 'src/components/DevisForm';
 import OptionsForm from 'src/components/OptionsForm';
 import ClientTab from 'src/components/ClientTab';
 import GalleryForm from 'src/components/GalleryForm';
-import Activity from '../Activity';
 
-//Import store actions
 import { seeArchives } from 'src/store/actions';
 
 const NewFormTab = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const alert = useAlert();
+
     //Get Client Informations:
     let order_number;
 
@@ -36,7 +38,7 @@ const NewFormTab = () => {
         order_number = order_number.order_number
     }
     const [ clientOne, setClient] = useState([]);
-    const url = `http://localhost:3000/api/sav/stepone/${order_number}`;
+    const url = `${sessionStorage.url}/api/sav/stepone/${order_number}`;
       const clientData = () => {
         axios.get(
           url, {
@@ -59,7 +61,7 @@ const NewFormTab = () => {
      */
     const archiveSav = () => {
         if(window.confirm('Voulez-vous archiver cette fiche ?')){
-          const urlArchive = `http://localhost:3000/api/sav/archive/${clientOne.id}`;
+          const urlArchive = `${sessionStorage.url}/api/sav/archive/${clientOne.id}`;
           axios.get(
             urlArchive, {
               withCredentials: true,
@@ -99,16 +101,16 @@ const NewFormTab = () => {
                     <ClientTab/>
                 </Tab>
                 <Tab eventKey="appareil" title="Appareil">
-                    <DeviceForm />
+                    <DeviceForm order_number={order_number} alert={alert} />
                 </Tab>
                 <Tab eventKey="intervention" title="Intervention">
-                    <InterventionForm />
+                    <InterventionForm order_number={order_number} alert={alert} />
                 </Tab>
                 <Tab eventKey="galerie" title="Galerie" >
                     <GalleryForm />
                 </Tab>
                 <Tab eventKey="devis" title="Devis" >
-                    <DevisForm />
+                    <DevisForm order_number={order_number} alert={alert} />
                 </Tab>
                 <Tab eventKey="options" title="Options" >
                     <OptionsForm />

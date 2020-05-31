@@ -33,7 +33,7 @@
     console.log(Array.from(dataform));
 
     //Get data from the Api with an axios request
-    axios.patch(`http://localhost:3000/api/sav/stepthree/${order_number}`, dataform,{
+    axios.patch(`${sessionStorage.url}/api/sav/stepthree/${order_number}`, dataform,{
       headers: {
         Authorization: sessionStorage.token,
         post: {

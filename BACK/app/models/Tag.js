@@ -130,7 +130,7 @@ module.exports = class Tag {
 
     static async tagBySav(idSav) {
         try {
-            console.log(idSav);
+
             const query = `SELECT "tag".title, "tag".color 
                             FROM "tag" 
                             JOIN "order_repair_tag" ON "tag".id="order_repair_tag".tag_id 

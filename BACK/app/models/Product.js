@@ -186,14 +186,57 @@ module.exports = class Product {
 
     static async addProductOnSav(idSav, idProduct, idUser){
         try {
-            const query = 'INSERT INTO "order_repair_product" (order_repair_id, product_id, user_id) VALUES ($1, $2, $3);';
+            const query = 'INSERT INTO "order_repair_product" (order_repair_id, product_id, user_id) VALUES ($1, $2, $3) RETURNING *;';
             const values = [idSav, idProduct, idUser];
             const result = await db.query(query, values);
+            
             if(result.rowCount == 1) {
-                return true;
+                const resultToSend = await this.findOne(idProduct);
+                resultToSend.idrel = result.rows[0].id
+                resultToSend.qty = result.rows[0].qty
+                return [resultToSend];
             }else{
                 return false;
             }
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+
+    static async productBySav(idSav) {
+        try {
+            const query = `SELECT "product".*, "order_repair_product".qty, "order_repair_product".id as idRel
+            FROM "order_repair_product"
+            LEFT JOIN "product" 
+            ON "order_repair_product".product_id="product".id
+            WHERE "order_repair_product".order_repair_id=$1;`;
+            const values = [idSav];
+            const result = await db.query(query,values);
+            if(result.rowCount == 0){
+                return [];
+            }else{
+                return result.rows;
+            }
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    static async deleteProductOnSav(id) {
+        try {
+            const query = 'DELETE FROM "order_repair_product" WHERE id=$1;';
+            const values = [id];
+
+            const result = await db.query(query, values);
+            if(result.rowCount == 0){
+                return false;
+            }
+
+            return true;
+
         } catch (error) {
             console.log(error);
             return false;

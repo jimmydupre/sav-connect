@@ -8,6 +8,8 @@ const validateEmail = require('../utils/mail.utils');
 // Verify Password Module
 const validatePassword = require('../utils/password.utils');
 
+const jwt = require('../utils/jwt.utils');
+
 /// User Model
 const User = require('../models/User');
 
@@ -154,6 +156,88 @@ module.exports = userController = {
             const result = await user.edit();
 
             return res.send(result);
+
+        } catch (error) {
+            console.log(error);
+            return res.status(403).send(error);
+        }
+    },
+
+    getProfil: async (req, res) => {
+        try {
+            let headerAuth = req.headers.authorization;
+                // On récupère l'id stocké dans le code
+            const id = jwt.getUserId(headerAuth);
+
+
+            // I search this user with id
+            const user = await User.findOne(id);
+            if(user == false) {
+                return res.send({"error": "Pas de résultat trouvé."});
+            }
+            return res.send(user);
+        } catch (error) {
+            console.log(error);
+            return res.send(error);
+        }
+    },
+
+
+    /**
+     * Edit User by id
+     */
+    editProfil: async (req, res) => {
+        try {
+            let headerAuth = req.headers.authorization;
+                // On récupère l'id stocké dans le code
+            const id = jwt.getUserId(headerAuth);
+
+            // I search this tag with id
+            const userOld = await User.findOne(id);
+            if(userOld == false) {
+                return res.send({"error": "Pas de résultat trouvé pour éditer l'utilisateur."});
+            }
+
+            let { firstname, lastname, mail, password, newPassword_two } = req.body;
+            console.log(req.body);
+
+
+            if(!firstname){ firstname =userOld.firstname }
+            if(!lastname){ lastname =userOld.lastname }
+            if(!mail){ mail =userOld.mail }
+            
+            // Validate Password with utils.js
+            if(!password && !newPassword_two){ 
+                password = userOld.password;
+            }else{
+                password = newPassword_two;
+            }
+
+            // Validate email with Utils.js
+            if(!validateEmail.validate(mail)){
+                return res.send({"error": "Votre adresse Email n'est pas correct."});
+            }
+
+
+            // // New instance for the new user
+            const user = new User({
+                id,
+                firstname,
+                lastname,
+                mail,
+                password,
+            });
+            if(password){
+                // HASH password
+                const passwordHashed = await bcrypt.hash(password, rounds);
+                user.password = passwordHashed;
+            }
+
+            
+            // // Edit this user
+            const result = await user.editProfil();
+
+            return res.send(true);
 
         } catch (error) {
             console.log(error);

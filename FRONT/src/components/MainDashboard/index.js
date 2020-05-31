@@ -30,10 +30,9 @@ const MainDashboard = () => {
 
   let { page } = useParams();
 
-  const url = `http://localhost:3000/api/sav/page/${page}/nb/20`;
+  const url = `${sessionStorage.url}/api/sav/page/${page}/nb/20`;
 
   page = parseInt(page, 10);
-
 
   // Get data from database with axios request
   const savData = () => {
@@ -67,7 +66,7 @@ const MainDashboard = () => {
     // We give it an id
     const id = element.getAttribute('id');
     // Road to archive the card
-    const archiveUrl = `http://localhost:3000/api/sav/archive/${id}`;
+    const archiveUrl = `${sessionStorage.url}/api/sav/archive/${id}`;
     
     axios.get(
       archiveUrl, {
@@ -101,7 +100,7 @@ const MainDashboard = () => {
   const addMoreSavData = () => {
     const page = isPage += 1;
     const nbElement = 8;
-    const url = `http://localhost:3000/api/sav/page/${page}/nb/${nbElement}`;
+    const url = `${sessionStorage.url}/api/sav/page/${page}/nb/${nbElement}`;
     setIsPage(page);
 
     axios.get(
@@ -116,12 +115,27 @@ const MainDashboard = () => {
         if (res.data.savs.length < nbElement) {
           setHasMore(false);
         }
+        
         setSavList(savList.concat(res.data.savs));
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+
+  if(!savList){
+    return (
+      <div className="main">
+      <Header
+        as="h2"
+      >
+        Liste des réparations <Link to="/formtab"><i className="plus icon" /></Link>
+      </Header>
+      <p>Pas de fiche SAV</p>
+    </div>
+    );
+  }
 
   return (
 

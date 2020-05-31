@@ -23,7 +23,7 @@ const ClientList = () => {
 
   let { page, id } = useParams();
 
-  const url = `http://localhost:3000/api/client/page/${page}/nb/20`;
+  const url = `${sessionStorage.url}/api/client/page/${page}/nb/20`;
 
   page = parseInt(page, 10)
  
@@ -55,7 +55,7 @@ const ClientList = () => {
   const addMoreSavData = () => {
     const page = isPage += 1;
     const nbElement = 8;
-    const url = `http://localhost:3000/api/client/page/${page}/nb/${nbElement}`;
+    const url = `${sessionStorage.url}/api/client/page/${page}/nb/${nbElement}`;
     setIsPage(page);
 
     axios.get(
@@ -79,6 +79,18 @@ const ClientList = () => {
         console.log(err);
       })
   };
+
+  if(!clientList) {
+    return (
+<div className="main">
+        <Header 
+            as='h2'>
+              Liste des clients <Link to="/formtab"><i className="plus icon"></i></Link>
+          </Header>
+          <p>Pas de clients</p>
+    </div>
+    );
+  }
 
   return (
     <div className="main">

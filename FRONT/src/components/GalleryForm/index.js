@@ -28,7 +28,7 @@ const GalleryForm = () => {
       dataform.append('order_number', order_number);
       dataform.append('picture', file);
     //   //Get data from the Api with an axios request
-      axios.post(`http://localhost:3000/api/sav/stepfour/${order_number}`, dataform,{
+      axios.post(`${sessionStorage.url}/api/sav/stepfour/${order_number}`, dataform,{
         headers: {
           Authorization: sessionStorage.token,
           post: {
@@ -54,7 +54,7 @@ const GalleryForm = () => {
     console.log(file);
     const id = file.id;
     const title = file.title;
-    const url = 'http://localhost:3000/static/'+title;
+    const url = sessionStorage.url+'/static/'+title;
     
     const gallery = document.getElementById("gallery");
     const image = document.createElement('img');
@@ -98,7 +98,7 @@ const deleteImage = (event, order_number) => {
   }
 
   console.log(order_number);
-  const url = `http://localhost:3000/api/sav/stepfour/delete/${order_number}/${id}`;
+  const url = `${sessionStorage.url}/api/sav/stepfour/delete/${order_number}/${id}`;
   axios.get(
     url, {
       withCredentials: true,
@@ -127,7 +127,7 @@ const GalleryList = () => {
   let {order_number} = useParams();
 
 
-    const url = `http://localhost:3000/api/sav/stepfour/${order_number}`;
+    const url = `${sessionStorage.url}/api/sav/stepfour/${order_number}`;
       const clientData = () => {
         axios.get(
           url, {
@@ -149,7 +149,7 @@ const GalleryList = () => {
   const showImages = () => {
       if(gallery){
         return gallery.map((image) => {
-          const url = 'http://localhost:3000/static/'+image.title;
+          const url = sessionStorage.url+'/static/'+image.title;
           return (
               
                   <img

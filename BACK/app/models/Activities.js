@@ -26,7 +26,7 @@ module.exports = class Activity {
     static async activityForOneSav(idSav){
         try {
             // Use function sql for find all activities
-            console.log(idSav);
+
             let id;
             if(idSav.substring(0, 3) != 'SAV'){
                 const queryId = 'SELECT order_number FROM "order_repair" WHERE id=$1;';
@@ -43,7 +43,7 @@ module.exports = class Activity {
                 const query = 'SELECT * FROM "activity" WHERE order_number=$1::text;';
                 const values = [id];
                 const result = await db.query(query,values);
-                console.log(result);
+
                 if(result.rowCount == 0){
                     return [];
                 }else{

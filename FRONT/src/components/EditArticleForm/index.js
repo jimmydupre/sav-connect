@@ -28,7 +28,7 @@ const EditArticleForm = (props) => {
     const [ product, setProduct ] = useState([]);
     
     if(id){
-        const url = `http://localhost:3000/api/product/${id}`;
+        const url = `${sessionStorage.url}/api/product/${id}`;
         const productData = () => {
           axios.get(
             url, {
@@ -38,6 +38,9 @@ const EditArticleForm = (props) => {
               },        
             })
             .then((res) => {
+              const value = res.data.price;
+              const priceTTC = tva(value);
+              setTtc(priceTTC);
               setProduct(res.data)
             })
             .catch((err) => {
@@ -47,6 +50,15 @@ const EditArticleForm = (props) => {
         
         useEffect(productData, [])
   }
+
+
+  const [ttc, setTtc ] = useState();
+
+  const onChangeTTC = (event) => {
+    const value = event.target.value;
+    const priceTTC = tva(value);
+    setTtc(priceTTC);
+  } 
 
  const { register, handleSubmit } = useForm();
  const onSubmit = data => {
@@ -61,7 +73,7 @@ const EditArticleForm = (props) => {
   
     console.log(Array.from(dataform));
     //Get data from the Api with an axios request
-    axios.patch(`http://localhost:3000/api/product/edit/${id}`, dataform,{
+    axios.patch(`${sessionStorage.url}/api/product/edit/${id}`, dataform,{
         headers: {
           Authorization: sessionStorage.token,
           post: {
@@ -82,6 +94,22 @@ const EditArticleForm = (props) => {
     })
     .catch ((error) => {console.trace(error); })
     };
+
+    const tva = (price) => {
+      let tarifHT = parseFloat(price);
+  
+      let tarifTTC
+      let montantTVA;
+  
+      const TVA = 20;
+  
+      montantTVA = tarifHT * TVA / 100;
+      tarifTTC = tarifHT + montantTVA;
+      const result = tarifTTC.toFixed(2);
+      return result;
+    }
+
+
 
     return (
       <div className="main">
@@ -109,11 +137,13 @@ const EditArticleForm = (props) => {
                ref={register}/>
             </Form.Field>
             <Form.Field>
-              <label>Prix</label>
+              <label>Prix HT</label>
               <input 
                name="price" 
                defaultValue={product.price || ''}
-               ref={register} />
+               ref={register}
+               onChange={onChangeTTC} />
+               <p>Tarif TTC : {ttc}</p>
             </Form.Field>
             <Form.Field>
               <label>unité</label>
@@ -128,7 +158,7 @@ const EditArticleForm = (props) => {
              color='green'
              type='submit'
              >Valider</Button>
-             <Link to={`/articlelist/`}>
+             <Link to={`/articlelist/1`}>
               <Button type='submit'>Annuler</Button>
              </Link>
           </div>

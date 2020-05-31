@@ -3,6 +3,9 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useAlert } from 'react-alert';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+
 
 //Semantic UI import
 import { Button, Header, Form } from 'semantic-ui-react';
@@ -12,6 +15,10 @@ import { seeActionList } from '../../store/actions';
 const ActionForm = () => {
   //UseAlert shows an alert button to confirm you completed the form correctly.
   const alert = useAlert()
+
+  //Usedispatch is to "dispatch" the route on where we want to go onSubmit
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   //React hook form props:
   const { register, handleSubmit } = useForm();
@@ -24,7 +31,7 @@ const ActionForm = () => {
     
     console.log(Array.from(dataform));
 
-    axios.post('http://localhost:3000/api/action/add', dataform,{
+    axios.post(`${sessionStorage.url}/api/action/add`, dataform,{
       headers: {
         Authorization: sessionStorage.token,
         post: {
@@ -33,7 +40,7 @@ const ActionForm = () => {
       }
     })
   .then ((response) => {
-      dispatchEvent(seeActionList(history));
+      dispatch(seeActionList(history));
       if(response.data){
         alert.success('action crée')
       }else{
