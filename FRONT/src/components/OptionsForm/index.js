@@ -89,6 +89,7 @@ const OptionsForm = () => {
         return ;
       }
       if(Object.entries(clientOne.tags).length === 0){
+        if(tags.length === undefined) return;
         return tags.map((tag, index) => {
           return (
             <span key={index} sav={idSav} onClick={e => activeTag(e, idSav)} id={tag.id} style={{border: '3px solid white' ,backgroundColor: tag.color, color: 'black', borderRadius: '1em',cursor:'pointer', padding : '0.5em', margin:'10px'}}>{tag.title}</span>

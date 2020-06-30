@@ -63,6 +63,7 @@ const BreakdownList = () => {
 
   //Get each point of the Api using array.map()
     const showBreakdowns = () => {
+      if(breakList.length === undefined) return;
         return breakList.map((breakdown) => {
             return (
                 <tr key={breakdown.id}>

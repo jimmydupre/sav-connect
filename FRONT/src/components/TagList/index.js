@@ -94,25 +94,29 @@ const TagList = () => {
   }
   };
 
-  const showTags = () => tagList.map((tag, index) => {
-    return (
-      <div
-        key={index}
-        className="tag-box"
-        style={{ backgroundColor: `${tag.color}`, color: 'white' }}
-        onDoubleClick = {() => history.push(`/edittagform/${tag.id}`)}
-        id={tag.id}
-      >
-        {tag.title}
-        <span className="tag-box-trash">
-          <i
+  const showTags = () => {
+    if(tagList.length === undefined) return;
+      return tagList.map((tag, index) => {
+        return (
+          <div
+            key={index}
+            className="tag-box"
+            style={{ backgroundColor: `${tag.color}`, color: 'white' }}
+            onDoubleClick = {() => history.push(`/edittagform/${tag.id}`)}
             id={tag.id}
-            onClick={archiveTag}
-          > x </i>
-        </span>
-      </div>
-    )
-});
+          >
+            {tag.title}
+            <span className="tag-box-trash">
+              <i
+                id={tag.id}
+                onClick={archiveTag}
+              > x </i>
+            </span>
+          </div>
+        )
+    });
+    
+  };
 
 
   return (
