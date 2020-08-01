@@ -105,7 +105,7 @@ class DeviceForm extends Component {
     let pannes = this.state.config_pannes;
 
     if(pannes){
-
+      if(pannes.length === undefined) return;
       return pannes.map((panne, key) => {
         return (
           <span key={key} className="btn" name={panne.title} onClick={this.handleClickPannes}>
